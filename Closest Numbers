@@ -1,0 +1,29 @@
+#include <stdio.h>
+#include <math.h>
+
+long long closest_multiple(double ab, long long x) {
+    long long lower = (long long)(ab / x) * x;
+    long long upper = lower + x;
+
+    if (fabs(ab - lower) <= fabs(upper - ab)) {
+        return lower;
+    } else {
+        return upper;
+    }
+}
+
+int main() {
+    int T;
+    scanf("%d", &T);
+
+    while (T--) {
+        long long a, b, x;
+        scanf("%lld %lld %lld", &a, &b, &x);
+
+        double ab = pow((double)a, (double)b);
+        long long result = closest_multiple(ab, x);
+        printf("%lld\n", result);
+    }
+
+    return 0;
+}
