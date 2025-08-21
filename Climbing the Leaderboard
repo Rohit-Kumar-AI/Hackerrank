@@ -1,0 +1,38 @@
+#include <stdio.h>
+
+int main() {
+    int n, m;
+    scanf("%d", &n);
+    
+    int scores[n], unique[n], uCount = 0;
+    
+    
+    for (int i = 0; i < n; i++) {
+        scanf("%d", &scores[i]);
+    }
+    
+    
+    unique[uCount++] = scores[0];
+    for (int i = 1; i < n; i++) {
+        if (scores[i] != scores[i-1]) {
+            unique[uCount++] = scores[i];
+        }
+    }
+    
+    
+    scanf("%d", &m);
+    int alice[m];
+    for (int i = 0; i < m; i++) {
+        scanf("%d", &alice[i]);
+    }
+    
+    int i = uCount - 1; 
+    for (int j = 0; j < m; j++) {
+        while (i >= 0 && alice[j] >= unique[i]) {
+            i--;
+        }
+        printf("%d\n", i + 2); 
+    }
+    
+    return 0;
+}
