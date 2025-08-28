@@ -1,0 +1,56 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+long long convert_to_decimal(long long d, int base) {
+    if (base <= 1) return -1;
+    long long value = 0, place = 1;
+    while (d > 0) {
+        int digit = d % 10;
+        if (digit >= base) return -1;
+        value += digit * place;
+        place *= base;
+        d /= 10;
+    }
+    return value;
+}
+
+int compare_ll(const void *a, const void *b) {
+    long long va = *(const long long*)a;
+    long long vb = *(const long long*)b;
+    if (va < vb) return -1;
+    else if (va > vb) return 1;
+    return 0;
+}
+
+int main() {
+    int n;
+    if (scanf("%d", &n) != 1) return 0;
+    long long *values = malloc(n * sizeof(long long));
+    int count = 0;
+    for (int i = 0; i < n; i++) {
+        int m;
+        long long d;
+        scanf("%d %lld", &m, &d);
+        long long dec = convert_to_decimal(d, m);
+        if (dec >= 0) values[count++] = dec;
+    }
+    if (count < 2) {
+        printf("0\n");
+        free(values);
+        return 0;
+    }
+    qsort(values, count, sizeof(long long), compare_ll);
+    long long jokes = 0, current = values[0], freq = 1;
+    for (int i = 1; i < count; i++) {
+        if (values[i] == current) freq++;
+        else {
+            jokes += freq * (freq - 1) / 2;
+            current = values[i];
+            freq = 1;
+        }
+    }
+    jokes += freq * (freq - 1) / 2;
+    printf("%lld\n", jokes);
+    free(values);
+    return 0;
+}
