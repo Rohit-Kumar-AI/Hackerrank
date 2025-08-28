@@ -1,0 +1,32 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+int main() {
+    int n, k;
+    scanf("%d %d", &n, &k);
+    int *a = (int*)malloc(n * sizeof(int));
+    for (int i = 0; i < n; ++i) scanf("%d", &a[i]);
+    int i = 0, plants = 0;
+    while (i < n) {
+        int placed = -1;
+        int right = (i + k - 1) < (n - 1) ? (i + k - 1) : (n - 1);
+        int left = i - (k - 1);
+        if (left < 0) left = 0;
+        for (int j = right; j >= left; --j) {
+            if (a[j] == 1) {
+                placed = j;
+                break;
+            }
+        }
+        if (placed == -1) {
+            printf("-1\n");
+            free(a);
+            return 0;
+        }
+        plants++;
+        i = placed + k;
+    }
+    printf("%d\n", plants);
+    free(a);
+    return 0;
+}
