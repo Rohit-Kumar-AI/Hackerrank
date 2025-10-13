@@ -1,0 +1,45 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+int main() {
+    ios::sync_with_stdio(false);
+    cin.tie(nullptr);
+
+    long long n;
+    int k;
+    long long r_q, c_q;
+    cin >> n >> k >> r_q >> c_q;
+
+    vector<long long> dist(8, 0);
+    dist[0] = n - r_q;
+    dist[1] = r_q - 1;
+    dist[2] = n - c_q;
+    dist[3] = c_q - 1;
+    dist[4] = min(dist[0], dist[2]);
+    dist[5] = min(dist[0], dist[3]);
+    dist[6] = min(dist[1], dist[2]);
+    dist[7] = min(dist[1], dist[3]);
+
+    for (int i = 0; i < k; ++i) {
+        long long r_o, c_o;
+        cin >> r_o >> c_o;
+        long long dr = r_o - r_q;
+        long long dc = c_o - c_q;
+        if (c_o == c_q) {
+            if (r_o > r_q) dist[0] = min(dist[0], dr - 1);
+            else dist[1] = min(dist[1], -dr - 1);
+        } else if (r_o == r_q) {
+            if (c_o > c_q) dist[2] = min(dist[2], dc - 1);
+            else dist[3] = min(dist[3], -dc - 1);
+        } else if (llabs(dr) == llabs(dc)) {
+            if (dr > 0 && dc > 0) dist[4] = min(dist[4], dr - 1);
+            else if (dr > 0 && dc < 0) dist[5] = min(dist[5], dr - 1);
+            else if (dr < 0 && dc > 0) dist[6] = min(dist[6], -dr - 1);
+            else if (dr < 0 && dc < 0) dist[7] = min(dist[7], -dr - 1);
+        }
+    }
+
+    long long ans = 0;
+    for (long long d : dist) ans += d;
+    cout << ans << '\n';
+}
