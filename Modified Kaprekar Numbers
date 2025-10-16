@@ -1,0 +1,32 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+int main() {
+    long long p, q;
+    if (!(cin >> p >> q)) return 0;
+
+    vector<long long> ans;
+    for (long long n = p; n <= q; ++n) {
+        long long sq = n * n;
+        // number of digits in n
+        int d = to_string(n).length();
+        long long pow10 = 1;
+        for (int i = 0; i < d; ++i) pow10 *= 10;
+
+        long long right = sq % pow10;
+        long long left  = sq / pow10;
+
+        if (left + right == n) ans.push_back(n);
+    }
+
+    if (ans.empty()) {
+        cout << "INVALID RANGE\n";
+    } else {
+        for (size_t i = 0; i < ans.size(); ++i) {
+            if (i) cout << " ";
+            cout << ans[i];
+        }
+        cout << "\n";
+    }
+    return 0;
+}
