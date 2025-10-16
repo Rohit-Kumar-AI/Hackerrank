@@ -1,0 +1,30 @@
+#include <bits/stdc++.h>
+using namespace std;
+int main() {
+    ios::sync_with_stdio(false);
+    cin.tie(nullptr);
+    int n;
+    if(!(cin >> n)) return 0;
+    vector<long long> cnt(1<<10, 0);
+    for(int i = 0; i < n; ++i) {
+        string s;
+        cin >> s;
+        int mask = 0;
+        for(char c: s) mask |= 1 << (c - '0');
+        cnt[mask]++;
+    }
+    long long ans = 0;
+    const int FULL = (1<<10) - 1;
+    for(int i = 0; i < (1<<10); ++i) {
+        if(cnt[i] == 0) continue;
+        for(int j = i; j < (1<<10); ++j) {
+            if(cnt[j] == 0) continue;
+            if((i | j) == FULL) {
+                if(i == j) ans += cnt[i] * (cnt[i] - 1) / 2;
+                else ans += cnt[i] * cnt[j];
+            }
+        }
+    }
+    cout << ans << '\n';
+    return 0;
+}
