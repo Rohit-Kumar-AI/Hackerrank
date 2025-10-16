@@ -1,0 +1,45 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+int minSwapsToOrder(const vector<int>& arr, bool ascending) {
+    int n = arr.size();
+    vector<pair<int,int>> v(n);
+    for (int i = 0; i < n; ++i) v[i] = {arr[i], i};
+    if (ascending) sort(v.begin(), v.end());
+    else sort(v.begin(), v.end(), greater<pair<int,int>>());
+
+    vector<int> toPos(n);
+    for (int sortedIndex = 0; sortedIndex < n; ++sortedIndex) {
+        int origIndex = v[sortedIndex].second;
+        toPos[origIndex] = sortedIndex;
+    }
+
+    vector<bool> visited(n,false);
+    int swaps = 0;
+    for (int i = 0; i < n; ++i) {
+        if (visited[i] || toPos[i] == i) continue;
+        int cycleSize = 0;
+        int j = i;
+        while (!visited[j]) {
+            visited[j] = true;
+            j = toPos[j];
+            ++cycleSize;
+        }
+        if (cycleSize > 0) swaps += (cycleSize - 1);
+    }
+    return swaps;
+}
+
+int main() {
+    ios::sync_with_stdio(false);
+    cin.tie(nullptr);
+    int n;
+    if (!(cin >> n)) return 0;
+    vector<int> arr(n);
+    for (int i = 0; i < n; ++i) cin >> arr[i];
+
+    int asc = minSwapsToOrder(arr, true);
+    int desc = minSwapsToOrder(arr, false);
+    cout << min(asc, desc) << '\n';
+    return 0;
+}
