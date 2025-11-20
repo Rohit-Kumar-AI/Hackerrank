@@ -1,0 +1,38 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+int main() {
+    ios::sync_with_stdio(false);
+    cin.tie(nullptr);
+
+    int t;
+    if (!(cin >> t)) return 0;
+    while (t--) {
+        int n;
+        string b;
+        cin >> n >> b;
+
+        int underscores = 0;
+        vector<int> freq(26, 0);
+        for (char c : b) {
+            if (c == '_') underscores++;
+            else freq[c - 'A']++;
+        }
+
+        if (underscores == 0) {
+            bool happy = true;
+            for (int i = 0; i < n; ++i) {
+                bool ok = (i > 0 && b[i] == b[i - 1]) || (i + 1 < n && b[i] == b[i + 1]);
+                if (!ok) { happy = false; break; }
+            }
+            cout << (happy ? "YES" : "NO") << "\n";
+        } else {
+            bool possible = true;
+            for (int f : freq) {
+                if (f == 1) { possible = false; break; }
+            }
+            cout << (possible ? "YES" : "NO") << "\n";
+        }
+    }
+    return 0;
+}
