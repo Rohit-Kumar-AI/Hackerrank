@@ -1,0 +1,36 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+int main() {
+    ios::sync_with_stdio(false);
+    cin.tie(nullptr);
+
+    long long n, m, k;
+    cin >> n >> m >> k;
+    unordered_map<long long, vector<pair<long long,long long>>> tracks;
+    for (int i = 0; i < k; i++) {
+        long long r, c1, c2;
+        cin >> r >> c1 >> c2;
+        tracks[r].push_back({c1, c2});
+    }
+
+    long long occupied = 0;
+    for (auto &row : tracks) {
+        auto &v = row.second;
+        sort(v.begin(), v.end());
+        long long start = v[0].first, end = v[0].second;
+        for (int i = 1; i < v.size(); i++) {
+            if (v[i].first <= end) {
+                end = max(end, v[i].second);
+            } else {
+                occupied += end - start + 1;
+                start = v[i].first;
+                end = v[i].second;
+            }
+        }
+        occupied += end - start + 1;
+    }
+
+    cout << n * m - occupied << "\n";
+    return 0;
+}
